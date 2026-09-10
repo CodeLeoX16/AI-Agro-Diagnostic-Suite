@@ -10,6 +10,7 @@ import cv2
 from transformers import pipeline
 
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
 
@@ -33,12 +34,24 @@ SUPPORTED_CROPS = ("Corn", "Potato", "Rice", "Wheat")
 MIN_CONFIDENCE = 0.50
 
 def get_llm():
+    provider = os.getenv("LLM_PROVIDER", "google").strip().lower()
+    if provider == "groq":
+        api_key = os.getenv("GROQ_API_KEY", "").strip()
+        if not api_key:
+            print("⚠️ Warning: GROQ_API_KEY not found in environment variables.")
+            return None
+        return ChatGroq(
+            model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
+            temperature=0.7,
+            groq_api_key=api_key
+        )
+
     api_key = os.getenv("GOOGLE_API_KEY", "").strip()
     if not api_key:
         print("⚠️ Warning: GOOGLE_API_KEY not found in environment variables.")
         return None
     return ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model=os.getenv("GOOGLE_MODEL", "gemini-1.5-flash"),
         temperature=0.7,
         google_api_key=api_key
     )
