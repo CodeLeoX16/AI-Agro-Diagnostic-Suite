@@ -1,144 +1,257 @@
-Markdown
-# 🌾 HarvestIQ — AI Agro Diagnostic Suite (v2.0 Universal)
+<div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/Version-2.0%20Universal-22c55e.svg)](#)
-[![Built With](https://img.shields.io/badge/Built%20With-FastAPI%20%7C%20Flask%20%2B%20TailwindCSS-0d1520.svg)](#)
+# 🌾 HarvestIQ
+### AI Agro Diagnostic Suite `v2.0 Universal`
 
-**HarvestIQ** is an end-to-end intelligent agricultural diagnosis and decision-support workspace. Powered by deep neural vision models and localized LLM reasoning, HarvestIQ enables farmers, agronomists, and researchers to detect crop leaf pathologies, review localized agronomic advisories, monitor live microclimate conditions, and interact via voice-enabled multilingual conversational AI.
+An intelligent agronomic workstation combining deep neural vision, real-time microclimate sensing, and multilingual conversational AI to diagnose and treat staple crop diseases.
 
----
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Render_Cloud-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://harvestiq-ai-powered-agriculture.onrender.com/)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Flask-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Tailwind CSS](https://img.shields.io/badge/UI-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-## ✨ Features
+<br />
 
-- **Multi-Crop Pathology Scanner:** Real-time visual diagnosis for core staple crops: **Rice, Corn, Wheat, and Potato**.
-- **Visual Attention/Explainability:** Dynamic rendering of diagnostic overlays (`attention_overlay`) highlighting detected lesions and infected zones.
-- **Automated Agronomic Prescription:** Markdown-formatted diagnostic reports detailing pathology names, model confidence scores, and targeted treatment advisories.
-- **HarvestBot Agronomic Assistant:** Context-aware chatbot trained on soil chemistry, pest management, and disease mitigation strategies.
-- **Weather & Microclimate Integration:** Automatic geolocation-based atmospheric sensor sync (temperature, relative humidity) via Open-Meteo API.
-- **Multilingual Support & Voice Input:** Native speech-to-text recognition and multilingual text generation in **English**, **Hindi (हिंदी)**, and **Bengali (বাংলা)**.
-- **One-Click Diagnostic Export:** Client-side generation and export of formal PDF prescription sheets via `html2pdf.js`.
-- **Modern Dark-Mode UI:** Responsive glassmorphic layout styled with Tailwind CSS, custom glow effects, and interactive feedback states.
+### 🌐 [Launch Live Web Application →](https://harvestiq-ai-powered-agriculture.onrender.com/)
+
+</div>
 
 ---
 
-## 🛠️ Architecture & Tech Stack
-
-### Client-Side (Frontend)
-- **HTML5 & Vanilla JavaScript:** Dynamic state handling, Web Speech API integration, and asynchronous backend communication.
-- **Tailwind CSS:** Modern utility-first dark-mode UI with custom palettes (`harvestDark`, `harvestGreen`, `harvestGold`).
-- **Marked.js:** Dynamic client-side parsing of Markdown prescription advisories and chat streams.
-- **html2pdf.js:** High-resolution DOM-to-PDF export pipeline.
-- **Open-Meteo API:** Real-time sensor and weather parameter ingestion.
-
-### Server-Side (Backend Blueprint)
-- **Framework:** Python (FastAPI / Flask)
-- **Vision Engine:** Deep Learning / Computer Vision model (e.g., PyTorch, TensorFlow/Keras, ONNX Runtime) trained on agricultural disease datasets (e.g., PlantVillage).
-- **Advisory Engine:** Local or Cloud LLM API configured for agronomic reasoning and multilingual translation.
+## 📑 Table of Contents
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Repository Structure](#-repository-structure)
+- [API Contract Specification](#-api-contract-specification)
+  - [1. Diagnostic Vision Engine (`/analyze`)](#1-diagnostic-vision-engine-analyze)
+  - [2. Conversational Agronomist (`/chat`)](#2-conversational-agronomist-chat)
+- [Local Setup & Installation](#-local-setup--installation)
+- [Deployment on Render](#-deployment-on-render)
+- [Browser Compatibility Matrix](#-browser-compatibility-matrix)
+- [Team & Credits](#-team--credits)
+- [License](#-license)
 
 ---
 
-## 📁 Suggested Repository Structure
+## 🌿 Overview
+
+**HarvestIQ** bridges clinical plant pathology and on-field agronomic decision support. By analyzing foliar imagery against trained pathology classifiers and enriching the diagnosis with local microclimatic data (ambient temperature and relative humidity via Open-Meteo), HarvestIQ delivers actionable, dosage-accurate prescription sheets alongside an interactive voice-enabled AI copilot.
+
+---
+
+## ⚡ Key Features
+
+| Feature | Description |
+| :--- | :--- |
+| 🔬 **Multi-Crop Pathology Scanner** | Real-time classification covering staple food crops: **Rice, Corn, Wheat, and Potato**. |
+| 🎯 **Explainable Attention Mapping** | Renders dynamic activation overlays (`attention_overlay`) highlighting infected lesion boundaries. |
+| 🌦️ **Microclimate Sensor Ingestion** | Automatically syncs device GPS with Open-Meteo APIs to contextualize disease risk against ambient temperature and humidity. |
+| 🤖 **HarvestBot Agro-Copilot** | Localized LLM trained on soil chemistry, integrated pest management (IPM), and chemical/organic interventions. |
+| 🗣️ **Multilingual & Voice-Enabled** | Native speech-to-text recognition and localization across **English**, **Hindi (हिंदी)**, and **Bengali (বাংলা)**. |
+| 📄 **Prescription Sheet PDF Export** | Client-side DOM-to-PDF export pipeline powered by `html2pdf.js` for physical field use. |
+| 🌌 **Dark Glassmorphic UI** | High-contrast, responsive interface crafted with custom utility palettes (`harvestDark`, `harvestGreen`, `harvestGold`). |
+
+---
+
+## 🏗️ System Architecture
+
+```text
+[ Farmer / Agronomist ]
+        │
+        ├── Uploads Leaf Image (JPG/PNG)
+        ├── Captures Voice / Text Query
+        └── Syncs Geolocation (Lat/Lon)
+        │
+        ▼
+┌─────────────────────────────────────────────────────────────┐
+│                 HarvestIQ Single-Page Application           │
+│  Tailwind CSS • Web Speech API • Open-Meteo • Marked.js    │
+└──────────────┬──────────────────────────────┬───────────────┘
+               │                              │
+        POST /analyze                   POST /chat
+               │                              │
+               ▼                              ▼
+┌──────────────────────────────┐ ┌────────────────────────────┐
+│      Vision Inference        │ │      Agronomic LLM        │
+│  PyTorch / ONNX Classifier   │ │  Soil, Disease & Climate   │
+│   Lesion / Attention Map     │ │    Prescription Prompts    │
+└──────────────┬───────────────┘ └────────────┬───────────────┘
+               │                              │
+               └──────────────┬───────────────┘
+                              ▼
+        [ Diagnostic Report & PDF Prescription ]
+```
+
+---
+
+## 📁 Repository Structure
 
 ```text
 HarvestIQ/
 ├── backend/
-│   ├── app.py                # Main server (FastAPI / Flask)
-│   ├── model/
-│   │   ├── classifier.onnx   # Trained crop pathology model
-│   │   └── labels.json       # Crop and disease class indices
+│   ├── app.py                 # Core application server (FastAPI / Flask)
+│   ├── requirements.txt       # Python dependencies
+│   ├── Procfile               # Deployment run process for Render
 │   ├── services/
-│   │   ├── vision.py         # Image inference & Grad-CAM pipeline
-│   │   └── chat.py           # LLM agent logic & prompt engineering
-│   └── requirements.txt      # Python dependencies
+│   │   ├── classifier.py      # Neural vision inference & Grad-CAM pipeline
+│   │   ├── assistant.py       # Conversational LLM wrapper & prompt logic
+│   │   └── weather.py         # Microclimate fallback handlers
+│   └── models/
+│       ├── crop_weights.onnx  # Exported model weights
+│       └── classes.json       # Crop and disease taxonomy mappings
 ├── frontend/
-│   └── index.html            # HarvestIQ UI (Single-Page Application)
-├── assets/                   # Architecture diagrams & screenshots
+│   └── index.html             # Single-page client interface
+├── assets/
+│   └── preview.png            # UI preview graphics
 ├── .gitignore
 ├── LICENSE
 └── README.md
-🔌 API Contract Reference
-The frontend expects the backend server to expose the following endpoints:
+```
 
-1. Leaf Diagnosis Endpoint
-URL: /analyze
+---
 
-Method: POST
+## 🔌 API Contract Specification
 
-Content-Type: multipart/form-data
+### 1. Diagnostic Vision Engine (`/analyze`)
 
-Request Parameters:
+Analyzes uploaded crop foliage photos and returns disease identification, confidence scores, and remediation instructions.
 
-file: Image file (leaf image)
+- **Endpoint:** `/analyze`
+- **HTTP Method:** `POST`
+- **Encoding:** `multipart/form-data`
 
-language: English | Hindi | Bengali
+#### Request Payload
+| Field | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `file` | `Binary` | **Yes** | Foliar image file (`.png`, `.jpg`, `.jpeg`) |
+| `language` | `String` | **Yes** | Selected locale: `English`, `Hindi`, or `Bengali` |
+| `weather` | `String` | No | Real-time weather string (e.g., `"29°C, 82% Humidity"`) |
 
-weather: String formatted microclimate data (e.g., "28°C, 75% Humidity")
-
-Response Format:
-
-JSON
+#### Success Response (`200 OK`)
+```json
 {
   "crop": "Potato",
   "disease": "Early Blight (Alternaria solani)",
   "confidence": 0.942,
   "is_healthy": false,
-  "remedy": "### Recommended Interventions\n* Apply **Mancozeb 75% WP** at 2g/L.\n* Improve air circulation and eliminate furrow water stagnation.",
-  "attention_overlay": "data:image/jpeg;base64,...",
+  "remedy": "### Diagnostic Overview\nLesions consistent with **Alternaria solani** observed.\n\n### Field Action Plan\n* Apply **Mancozeb 75% WP** (2.0 g/L water) or **Azoxystrobin 23% SC**.\n* Prune lower infected foliage to suppress spore splashback.\n* Eliminate furrow water stagnation immediately.",
+  "attention_overlay": "data:image/jpeg;base64,/9j/4AAQSkZJRg...",
   "error": null
 }
-2. Conversational Assistant Endpoint
-URL: /chat
+```
 
-Method: POST
+---
 
-Content-Type: application/json
+### 2. Conversational Agronomist (`/chat`)
 
-Request Body:
+Processes field questions and returns context-aware treatment, fertilizer, or soil guidelines.
 
-JSON
+- **Endpoint:** `/chat`
+- **HTTP Method:** `POST`
+- **Encoding:** `application/json`
+
+#### Request Body
+```json
 {
-  "message": "What fungicide is best for potato early blight under high humidity?",
+  "message": "Which fungicide should I spray on potato early blight if rain is expected tonight?",
   "language": "English",
-  "weather": "28°C, 75% Humidity"
+  "weather": "29°C, 82% Humidity"
 }
-Response Format:
+```
 
-JSON
+#### Success Response (`200 OK`)
+```json
 {
-  "response": "Under high humidity (75%), fungal spread accelerates. Prioritize systemic fungicides containing **Chlorothalonil** or **Azoxystrobin**..."
+  "response": "With high humidity and impending rainfall, prioritize a **systemic translaminar fungicide** (e.g., **Difenoconazole 25% EC** at 0.5 ml/L) over purely surface protectants like Mancozeb, as systemic options absorb rapidly and resist rain wash-off within 2 to 3 hours of dry application."
 }
-🚀 Quick Start
-1. Clone the Repository
-Bash
+```
+
+---
+
+## 💻 Local Setup & Installation
+
+### Prerequisites
+- **Python 3.9+**
+- **pip** and **git**
+
+### 1. Clone Repository
+```bash
 git clone [https://github.com/your-username/HarvestIQ.git](https://github.com/your-username/HarvestIQ.git)
 cd HarvestIQ
-2. Set Up the Backend
-Using Python 3.9+:
+```
 
-Bash
-# Create and activate virtual environment
+### 2. Configure Virtual Environment
+```bash
+# Linux / macOS
+python3 -m venv venv
+source venv/bin/activate
+
+# Windows
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate
+```
 
-# Install dependencies
-pip install fastapi uvicorn pillow torch torchvision  # Example stack
-3. Run the Development Server
-Bash
-# Assuming backend/app.py serves static files or runs on port 8000
-uvicorn backend.app:app --reload --host 0.0.0.0 --port 8000
-Open your browser and navigate to http://localhost:8000 to launch the workspace.
+### 3. Install Dependencies
+```bash
+pip install -r backend/requirements.txt
+```
 
-🧪 Browser Compatibility
-Feature	Chrome / Edge	Firefox	Safari
-Glassmorphic UI & Layout	✅	✅	✅
-Geolocation Sensor Fetch	✅	✅	✅
-PDF Prescription Export	✅	✅	✅
-Voice Recognition (Web Speech API)	✅	⚠️ (Flag-dependent)	⚠️ (Partial)
-👨‍💻 Author & Engineering Credits
-Engineered with precision by Team CodoLeoX16.
+### 4. Run Development Server
+```bash
+# If using FastAPI:
+uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
 
-For inquiries, collaborations, or model fine-tuning discussions, open an issue or pull request in this repository.
+# If using Flask:
+python backend/app.py
+```
 
-📄 License
-This project is licensed under the MIT License — feel free to modify and adapt it for agricultural research and production deployments.
+Access the UI at `http://localhost:8000`.
+
+---
+
+## ☁️ Deployment on Render
+
+This repository is pre-configured for deployment on [Render](https://render.com/):
+
+1. Fork or push this repository to GitHub.
+2. In the Render Dashboard, choose **New +** → **Web Service**.
+3. Link your repository.
+4. Configure service parameters:
+   - **Environment:** `Python 3`
+   - **Build Command:**
+     ```bash
+     pip install -r backend/requirements.txt
+     ```
+   - **Start Command:**
+     ```bash
+     gunicorn -w 4 -k uvicorn.workers.UvicornWorker backend.app:app
+     ```
+5. Click **Create Web Service** to launch your live instance.
+
+---
+
+## 🧪 Browser Compatibility Matrix
+
+| Feature | Google Chrome | Mozilla Firefox | Apple Safari | Microsoft Edge |
+| :--- | :---: | :---: | :---: | :---: |
+| **Glassmorphic Theme & Layout** | Full | Full | Full | Full |
+| **HTML5 Geolocation Ingestion** | Full | Full | Full | Full |
+| **One-Click PDF Prescription** | Full | Full | Full | Full |
+| **Web Speech Voice Input** | Full | Partial / Flag | Partial | Full |
+
+---
+
+## 👥 Team & Credits
+
+Engineered with precision by **Team CodoLeoX16**.
+
+- Open-source contributions, bug reports, and dataset enrichments are welcome.
+- Please open an **Issue** or submit a **Pull Request** following the contribution guidelines.
+
+---
+
+## 📄 License
+
+This project is open-source software licensed under the **[MIT License](LICENSE)**.
