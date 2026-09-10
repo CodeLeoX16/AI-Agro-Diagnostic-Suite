@@ -10,7 +10,6 @@ import cv2
 from transformers import pipeline
 
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
 
@@ -36,6 +35,8 @@ MIN_CONFIDENCE = 0.50
 def get_llm():
     provider = os.getenv("LLM_PROVIDER", "google").strip().lower()
     if provider == "groq":
+        from langchain_groq import ChatGroq
+
         api_key = os.getenv("GROQ_API_KEY", "").strip()
         if not api_key:
             print("⚠️ Warning: GROQ_API_KEY not found in environment variables.")
